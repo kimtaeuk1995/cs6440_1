@@ -110,6 +110,8 @@ def get_db():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db = SessionLocal()
+
+    # Create test user if not exists
     user = get_user(db, "testuser")
     if not user:
         user = User(
@@ -119,9 +121,25 @@ async def lifespan(app: FastAPI):
         )
         db.add(user)
         db.commit()
+        db.refresh(user)
+
+    # ✅ Insert test glucose data if none exists
+    from sqlalchemy import exists
+    has_data = db.query(exists().where(DiabetesData.user_id == "testuser")).scalar()
+    if not has_data:
+        from datetime import datetime, timedelta
+        test_entry = DiabetesData(
+            user_id="testuser",
+            blood_sugar=135.0,
+            meal_info="Lunch",
+            medication_dose=2.5,
+            timestamp=(datetime.now() - timedelta(days=1)).isoformat()
+        )
+        db.add(test_entry)
+        db.commit()
+
     db.close()
     yield
-
 # -------------------- FastAPI App --------------------
 app = FastAPI(lifespan=lifespan)
 
