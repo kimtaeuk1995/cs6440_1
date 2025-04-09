@@ -11,7 +11,7 @@ export default function PatientPage() {
     medication_dose: ""
   });
 
-  const token = localStorage.getItem("access_token");
+  const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   const fetchData = async () => {
     try {
