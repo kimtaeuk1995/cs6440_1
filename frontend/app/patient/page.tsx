@@ -29,10 +29,16 @@ export default function PatientPage() {
       <h1>Patient Glucose Data</h1>
       {error && <p>{error}</p>}
       <ul>
-        {data.map((item: any, index) => (
-          <li key={index}>{item.timestamp}: {item.blood_sugar} mg/dL</li>
-        ))}
+        {Array.isArray(data) ? (
+          data.map((item: any, index) => (
+            <li key={index}>
+              {item.timestamp}: {item.blood_sugar} mg/dL
+            </li>
+          ))
+        ) : (
+          <p>No data available.</p>
+        )}
       </ul>
     </div>
   );
-}
+  
