@@ -190,18 +190,20 @@ async def glucose_data(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    # Ensure exact match on user_id using authenticated username
     data = (
         db.query(DiabetesData)
         .filter(DiabetesData.user_id == current_user.username)
-        .order_by(DiabetesData.timestamp.desc())  # 👈 DESCENDING ORDER
+        .order_by(DiabetesData.timestamp.desc())
         .all()
     )
+
     return [
         {
             "timestamp": d.timestamp,
             "blood_sugar": round(d.blood_sugar, 1),
-            "meal": d.meal_info,
-            "dose": round(d.medication_dose, 1)
+            "meal_info": d.meal_info,
+            "medication_dose": round(d.medication_dose, 1)
         }
         for d in data
     ]
