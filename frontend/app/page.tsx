@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Header from "./header";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -44,64 +43,60 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <Header />
-      <h2>Login to your dashboard</h2>
-      <form
-        onSubmit={handleLogin}
+    <form
+      onSubmit={handleLogin}
+      style={{
+        maxWidth: "400px",
+        margin: "2rem auto",
+        padding: "2rem",
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        textAlign: "center",
+      }}
+    >
+      <h2 style={{ marginBottom: "1rem" }}>Login to your dashboard</h2>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+        required
         style={{
-          maxWidth: "400px",
-          margin: "2rem auto",
-          padding: "2rem",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          textAlign: "center",
+          width: "100%",
+          padding: "0.5rem",
+          marginBottom: "1rem",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        required
+        style={{
+          width: "100%",
+          padding: "0.5rem",
+          marginBottom: "1rem",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+      />
+      <button
+        type="submit"
+        style={{
+          padding: "0.5rem 1.5rem",
+          backgroundColor: "#28a745",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
         }}
       >
-        <h2>Login to your dashboard</h2>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          required
-          style={{
-            width: "100%",
-            padding: "0.5rem",
-            marginBottom: "1rem",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-          style={{
-            width: "100%",
-            padding: "0.5rem",
-            marginBottom: "1rem",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "0.5rem 1.5rem",
-            backgroundColor: "#28a745",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Login
-        </button>
-        {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
-      </form>
-    </>
+        Login
+      </button>
+      {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
+    </form>
   );
 }
