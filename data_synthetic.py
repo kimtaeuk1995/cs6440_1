@@ -3,27 +3,39 @@ from datetime import datetime, timedelta
 
 import requests
 
-API_URL = "https://cs6440-1.onrender.com/add_data/"
-TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc0NDE3MTMwNX0.Dglj95HN2vydQjvoU6_Zqs4xOnIHCbN5OhuEcSfkpV4"
+API_URL = "https://cs6440-1.onrender.com/submit_today/"
+TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc0NDI0MTAzNn0.GII_nn8NurhuhrLo08_Zxwvg87x72W49nzZmSifuQZM"
 
-headers = {
+HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
     "Content-Type": "application/json"
 }
 
-start_date = datetime(2025, 1, 1)
-today = datetime.now()
-current = start_date
+meal_options = ["Breakfast", "Lunch", "Dinner"]
 
-while current < today:
-    payload = {
-        "user_id": "testuser",
-        "blood_sugar": round(random.uniform(80, 160), 1),
-        "meal_info": random.choice(["Breakfast", "Lunch", "Dinner"]),
-        "medication_dose": round(random.uniform(4.0, 8.0), 1),
-        "timestamp": current.isoformat()
-    }
-    response = requests.post(API_URL, json=payload, headers=headers)
-    print(f"{current.date()} → {response.status_code}: {response.text}")
+# Generate synthetic entries
+def generate_data():
+    entries = []
+    current_date = datetime.now()
+    for _ in range(10):
+        entry = {
+            "blood_sugar": round(random.uniform(90, 180), 1),
+            "meal_info": random.choice(meal_options),
+            "medication_dose": round(random.uniform(1, 15), 1),
+        }
+        entries.append(entry)
+        # simulate earlier date for next
+        current_date -= timedelta(days=random.randint(3, 7))
+    return entries
 
-    current += timedelta(days=random.randint(3, 7))
+def bulk_insert(entries):
+    for i, entry in enumerate(entries, 1):
+        response = requests.post(API_URL, headers=HEADERS, json=entry)
+        if response.status_code == 200:
+            print(f"[{i}] ✅ Inserted: {entry}")
+        else:
+            print(f"[{i}] ❌ Failed: {response.status_code} - {response.text}")
+
+if __name__ == "__main__":
+    data_entries = generate_data()
+    bulk_insert(data_entries)
