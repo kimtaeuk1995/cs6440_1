@@ -9,8 +9,10 @@ export default function PatientPage() {
     meal_info: "",
     medication_dose: ""
   });
+
   const [error, setError] = useState("");
 
+  // ⬇️ Get token after hydration
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("access_token");
@@ -18,6 +20,7 @@ export default function PatientPage() {
     }
   }, []);
 
+  // ⬇️ Fetch glucose data once token is ready
   useEffect(() => {
     if (token) fetchData();
   }, [token]);
@@ -25,7 +28,7 @@ export default function PatientPage() {
   const fetchData = async () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/glucose-data`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) {
@@ -60,7 +63,7 @@ export default function PatientPage() {
 
     if (res.ok) {
       setForm({ blood_sugar: "", meal_info: "", medication_dose: "" });
-      fetchData();
+      fetchData(); // reload
     } else {
       const text = await res.text();
       console.error("❌ Failed to submit:", text);
@@ -116,28 +119,3 @@ export default function PatientPage() {
         <button
           type="submit"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Submit Today's Data
-        </button>
-      </form>
-
-      <div className="pt-4">
-        <h2 className="text-lg font-semibold">Recent Glucose Readings</h2>
-        {data.length === 0 ? (
-          <p className="text-gray-500">No data available.</p>
-        ) : (
-          <ul className="space-y-2 mt-2">
-            {data.map((item, index) => (
-              <li key={index} className="border p-2 rounded shadow-sm">
-                <div><strong>Date:</strong> {new Date(item.timestamp).toLocaleString()}</div>
-                <div><strong>Blood Sugar:</strong> {item.blood_sugar} mg/dL</div>
-                <div><strong>Meal:</strong> {item.meal}</div>
-                <div><strong>Dose:</strong> {item.dose} units</div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
-  );
-}
