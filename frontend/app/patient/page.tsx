@@ -62,10 +62,10 @@ export default function PatientPage() {
                   <strong>Blood Sugar:</strong> {item.blood_sugar} mg/dL
                 </div>
                 <div>
-                  <strong>Meal:</strong> {item.meal}
+                  <strong>Meal:</strong> {item.meal_info}
                 </div>
                 <div>
-                  <strong>Dose:</strong> {item.dose} units
+                  <strong>Dose:</strong> {item.medication_dose} units
                 </div>
               </li>
             ))}
