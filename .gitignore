@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+.next/
+.env
+.env.local
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+diabetes_tracker.db
