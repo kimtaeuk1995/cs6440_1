@@ -1,21 +1,18 @@
 import './globals.css';
-import Header from './header';
+import Header from './header'; // <- this is your header.js
+
 export const metadata = {
   title: 'Diabetes - Self Management Tool',
-  description: 'Self-management app for diabetes tracking',
+  description: 'Track and manage your diabetes effectively',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         <Header />
-        <main>{children}</main>
+        {children}
       </body>
     </html>
-  )
+  );
 }
