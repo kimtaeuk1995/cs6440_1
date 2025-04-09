@@ -1,0 +1,7 @@
+import Header from "./header";
+
+.header {
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+ }

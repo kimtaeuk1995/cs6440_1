@@ -1,8 +1,0 @@
-fastapi==0.110.0
-uvicorn==0.29.0
-mangum==0.17.0
-sqlalchemy
-requests
-passlib[bcrypt]
-python-jose
-python-multipart
