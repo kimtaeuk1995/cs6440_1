@@ -1,12 +1,21 @@
-"use client";
+import './globals.css';
+import Header from './header';
+export const metadata = {
+  title: 'Diabetes - Self Management Tool',
+  description: 'Self-management app for diabetes tracking',
+};
 
-import '../globals.css';
-
-function Header() {
-    return (
-        <header style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '24px' }}>Diabetes - Self Management Tool</h1>
-        </header>
-    );
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Header />
+        <main>{children}</main>
+      </body>
+    </html>
+  )
 }
-export default Header;
