@@ -190,12 +190,15 @@ async def glucose_data(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    username = current_user.username.strip().lower()
+
     data = (
         db.query(DiabetesData)
-        .filter(DiabetesData.user_id == current_user.username)
-        .order_by(DiabetesData.timestamp.desc())
+        .filter(DiabetesData.user_id == username) 
+        .order_by(DiabetesData.timestamp.desc())  
         .all()
     )
+
     return [
         {
             "timestamp": d.timestamp,
@@ -223,7 +226,7 @@ async def submit_today_data(
 ):
     today = datetime.now().isoformat()
     new_entry = DiabetesData(
-        user_id=current_user.username,
+        user_id=current_user.username.strip().lower(),  # ✅ force match
         blood_sugar=input.blood_sugar,
         meal_info=input.meal_info,
         medication_dose=input.medication_dose,
@@ -236,17 +239,3 @@ async def submit_today_data(
         "message": "Glucose data submitted",
         "timestamp": today
     }
-
-@app.get("/debug-glucose")
-def debug_glucose(db: Session = Depends(get_db)):
-    all_data = db.query(DiabetesData).all()
-    return [
-        {
-            "user_id": d.user_id,
-            "blood_sugar": d.blood_sugar,
-            "meal_info": d.meal_info,
-            "medication_dose": d.medication_dose,
-            "timestamp": d.timestamp
-        }
-        for d in all_data
-    ]
