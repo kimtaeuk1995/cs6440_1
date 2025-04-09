@@ -206,3 +206,32 @@ async def glucose_data(
         for d in data
     ]
 
+from datetime import datetime
+
+
+class SimpleGlucoseInput(BaseModel):
+    blood_sugar: float
+    meal_info: str
+    medication_dose: float
+
+@app.post("/submit_today/")
+async def submit_today_data(
+    input: SimpleGlucoseInput,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    today = datetime.now().isoformat()
+    new_entry = DiabetesData(
+        user_id=current_user.username,
+        blood_sugar=input.blood_sugar,
+        meal_info=input.meal_info,
+        medication_dose=input.medication_dose,
+        timestamp=today
+    )
+    db.add(new_entry)
+    db.commit()
+    db.refresh(new_entry)
+    return {
+        "message": "Glucose data submitted",
+        "timestamp": today
+    }
