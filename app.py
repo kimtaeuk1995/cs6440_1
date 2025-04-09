@@ -193,7 +193,7 @@ async def glucose_data(
     data = (
         db.query(DiabetesData)
         .filter(DiabetesData.user_id == current_user.username)
-        .order_by(DiabetesData.timestamp.desc())  # 👈 DESCENDING ORDER
+        .order_by(DiabetesData.timestamp.desc())
         .all()
     )
     return [
@@ -205,6 +205,7 @@ async def glucose_data(
         }
         for d in data
     ]
+
 
 from datetime import datetime
 
@@ -235,3 +236,17 @@ async def submit_today_data(
         "message": "Glucose data submitted",
         "timestamp": today
     }
+
+@app.get("/debug-glucose")
+def debug_glucose(db: Session = Depends(get_db)):
+    all_data = db.query(DiabetesData).all()
+    return [
+        {
+            "user_id": d.user_id,
+            "blood_sugar": d.blood_sugar,
+            "meal_info": d.meal_info,
+            "medication_dose": d.medication_dose,
+            "timestamp": d.timestamp
+        }
+        for d in all_data
+    ]
