@@ -46,7 +46,17 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <form onSubmit={handleLogin} style={{ textAlign: "center", marginTop: "2rem" }}>
+      <form
+        onSubmit={handleLogin}
+        style={{
+          maxWidth: "400px",
+          margin: "2rem auto",
+          padding: "2rem",
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          textAlign: "center",
+        }}
+      >
         <h2>Login to your dashboard</h2>
         <input
           type="text"
@@ -54,7 +64,13 @@ export default function LoginPage() {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
           required
-          style={{ display: "block", margin: "1rem auto", padding: "0.5rem" }}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
         />
         <input
           type="password"
@@ -62,9 +78,25 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           required
-          style={{ display: "block", margin: "1rem auto", padding: "0.5rem" }}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
         />
-        <button type="submit" style={{ padding: "0.5rem 1rem" }}>
+        <button
+          type="submit"
+          style={{
+            padding: "0.5rem 1.5rem",
+            backgroundColor: "#28a745",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
           Login
         </button>
         {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
