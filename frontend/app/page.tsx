@@ -46,6 +46,7 @@ export default function LoginPage() {
   return (
     <>
       <Header />
+      <h2>Login to your dashboard</h2>
       <form
         onSubmit={handleLogin}
         style={{
